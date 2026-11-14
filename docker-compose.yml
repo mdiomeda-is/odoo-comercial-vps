@@ -1,0 +1,47 @@
+# ============================================================================
+#  Odoo 19 Community + PostgreSQL 16  ·  para desplegar en COOLIFY
+#  Coolify aporta el reverse proxy (Traefik) + SSL automático; por eso acá
+#  NO hay servicio Traefik ni puertos 80/443. En Coolify asignás el dominio al
+#  servicio 'odoo' (puerto 8069) y él se encarga del HTTPS.
+# ============================================================================
+services:
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+  odoo:
+    build:
+      context: .
+      args:
+        ODOO_VERSION: "19.0"
+    image: odoo-comercial-vps:19.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # La imagen oficial de Odoo usa estas variables para conectar a la base:
+      HOST: db
+      USER: ${POSTGRES_USER}
+      PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - odoo-data:/var/lib/odoo
+    expose:
+      - "8069"
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  odoo-data:

@@ -1,0 +1,6 @@
+# Secretos locales (en Coolify las variables van en Environment Variables del recurso)
+.env
+backups/
+
+# NOTA: config/odoo.conf SÍ se versiona (no tiene secretos de DB; cambiá el admin_passwd
+# antes de producción o sobre-escribilo con un file-mount en Coolify).
