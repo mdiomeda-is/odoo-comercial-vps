@@ -26,6 +26,7 @@ POSTGRES_PASSWORD=<clave fuerte>
 ODOO_DB_NAME=comercial
 ODOO_ADMIN_LOGIN=admin@tudominio.com
 ODOO_ADMIN_PASSWORD=<clave fuerte>
+ODOO_BASE_URL=https://odoo.tudominio.com
 ODOO_INIT_MODULES=base,contacts,crm,sale_management,account,l10n_ar,purchase,stock,project,l10n_ar_fiscal_ws
 COMPANY_NAME=Tu Empresa S.A.
 COMPANY_VAT=30-12345678-9
@@ -66,12 +67,16 @@ el error lo dice; se agrega el `pip install` al Dockerfile y re-deploy.
 Luego, en Coolify, **Restart** del servicio odoo (para que sirva la base nueva).
 
 ## 7) Preconfigurar empresa + idioma
-En la terminal del contenedor `odoo`:
+El `docker-compose.yml` ya inyecta las variables `COMPANY_*` / `ODOO_*` al contenedor odoo,
+así que primero **confirmá/cargá** esas variables en Coolify (paso 3, con tus datos reales) y
+hacé **Redeploy** (los volúmenes persisten, no perdés la base). Después, en la terminal del
+contenedor `odoo`:
 ```bash
 python3 /preconfigure.py
 ```
-Carga empresa, admin e **instala es_AR de forma robusta**. Entrás a `https://odoo.tudominio.com`
-con `ODOO_ADMIN_LOGIN` / `ODOO_ADMIN_PASSWORD`.
+Carga empresa, admin, **instala es_AR de forma robusta** y fija **`web.base.url`** en https
+(links internos correctos). Entrás a `https://odoo.tudominio.com` con
+`ODOO_ADMIN_LOGIN` / `ODOO_ADMIN_PASSWORD`.
 
 ## 8) Config fiscal AFIP/ARCA
 Seguí **CONFIG-AFIP.md** (certificado, punto de venta, entorno homologación) y

@@ -108,6 +108,22 @@ call("res.users", "write", [uid], {
 })
 print(f">> Admin configurado -> login: {NEW_LOGIN}")
 
+
+# --- URL base (para que los links internos salgan en https) ---
+def set_param(key, val):
+    pid = find_id("ir.config_parameter", [["key", "=", key]])
+    if pid:
+        call("ir.config_parameter", "write", [pid], {"value": val})
+    else:
+        call("ir.config_parameter", "create", {"key": key, "value": val})
+
+
+base_url = get("ODOO_BASE_URL")
+if base_url:
+    set_param("web.base.url", base_url)
+    set_param("web.base.url.freeze", "True")  # evita que Odoo la pise al loguear
+    print(f">> web.base.url = {base_url} (freeze=True)")
+
 print("")
 print("========================================================")
 print("  Preconfiguración completada.")

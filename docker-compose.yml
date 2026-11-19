@@ -36,6 +36,25 @@ services:
       HOST: db
       USER: ${POSTGRES_USER}
       PASSWORD: ${POSTGRES_PASSWORD}
+      # --- Las lee scripts/preconfigure.py (empresa + admin + idioma + URL base) ---
+      ODOO_DB_NAME: ${ODOO_DB_NAME:-comercial}
+      ODOO_ADMIN_LOGIN: ${ODOO_ADMIN_LOGIN}
+      ODOO_ADMIN_PASSWORD: ${ODOO_ADMIN_PASSWORD}
+      ODOO_BASE_URL: ${ODOO_BASE_URL}
+      ODOO_INIT_MODULES: ${ODOO_INIT_MODULES}
+      COMPANY_NAME: ${COMPANY_NAME}
+      COMPANY_VAT: ${COMPANY_VAT}
+      COMPANY_STREET: ${COMPANY_STREET}
+      COMPANY_CITY: ${COMPANY_CITY}
+      COMPANY_ZIP: ${COMPANY_ZIP}
+      COMPANY_STATE: ${COMPANY_STATE}
+      COMPANY_COUNTRY_CODE: ${COMPANY_COUNTRY_CODE:-AR}
+      COMPANY_PHONE: ${COMPANY_PHONE}
+      COMPANY_EMAIL: ${COMPANY_EMAIL}
+      COMPANY_WEBSITE: ${COMPANY_WEBSITE}
+      COMPANY_CURRENCY: ${COMPANY_CURRENCY:-ARS}
+      COMPANY_LANG: ${COMPANY_LANG:-es_AR}
+      COMPANY_TZ: ${COMPANY_TZ:-America/Argentina/Buenos_Aires}
     volumes:
       - odoo-data:/var/lib/odoo
     expose:
